@@ -32,6 +32,15 @@ class _PagSudokuState extends State<PagSudoku> {
   late List<List<int>> matrizSudoku;
   late List<Tuple2<int, int>> celulasVazias;
   late List<int> selecionado;
+  List<List<int>> mexerNoValor(int value) {
+    int i = selecionado[0];
+    int j = selecionado[1];
+    if (!celulasVazias.contains(Tuple2(i, j))) return matrizSudoku;
+    setState(() {
+      matrizSudoku[i][j] = value;
+    });
+    return matrizSudoku;
+  }
 
   @override
   void initState() {
@@ -52,6 +61,7 @@ class _PagSudokuState extends State<PagSudoku> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         padding: const EdgeInsets.all(10),
@@ -138,17 +148,75 @@ class _PagSudokuState extends State<PagSudoku> {
               spacing: 5,
               runSpacing: 5,
               children: [
-                OutlinedButton(onPressed: () {}, child: const Text('1')),
-                OutlinedButton(onPressed: () {}, child: const Text('2')),
-                OutlinedButton(onPressed: () {}, child: const Text('3')),
-                OutlinedButton(onPressed: () {}, child: const Text('4')),
-                OutlinedButton(onPressed: () {}, child: const Text('5')),
-                OutlinedButton(onPressed: () {}, child: const Text('6')),
-                OutlinedButton(onPressed: () {}, child: const Text('7')),
-                OutlinedButton(onPressed: () {}, child: const Text('8')),
-                OutlinedButton(onPressed: () {}, child: const Text('9')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(1);
+                      });
+                    },
+                    child: const Text('1')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(2);
+                      });
+                    },
+                    child: const Text('2')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(3);
+                      });
+                    },
+                    child: const Text('3')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(4);
+                      });
+                    },
+                    child: const Text('4')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(5);
+                      });
+                    },
+                    child: const Text('5')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(6);
+                      });
+                    },
+                    child: const Text('6')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(7);
+                      });
+                    },
+                    child: const Text('7')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(8);
+                      });
+                    },
+                    child: const Text('8')),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        matrizSudoku = mexerNoValor(9);
+                      });
+                    },
+                    child: const Text('9')),
                 FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        mexerNoValor(-1);
+                      });
+                    },
                     child: const Icon(Icons.delete_outline_sharp)),
               ],
             ),
