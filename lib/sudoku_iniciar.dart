@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sudoku_dart/sudoku_dart.dart';
+import 'package:sudoku/sudoku_jogo.dart';
 
 class PagInicial extends StatefulWidget {
   const PagInicial({super.key});
@@ -9,7 +9,8 @@ class PagInicial extends StatefulWidget {
 }
 
 class _PagInicialState extends State<PagInicial> {
-  String? _radio1;
+  String dificuldade = 'f';
+  TextEditingController controladorNome = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -25,13 +26,14 @@ class _PagInicialState extends State<PagInicial> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Padding(
+                Padding(
                     padding: const EdgeInsets.all(20),
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Seu Nome',
                       ),
+                      controller: controladorNome,
                     )),
                 const SizedBox(
                   height: 20,
@@ -41,44 +43,43 @@ class _PagInicialState extends State<PagInicial> {
                   runSpacing: 10,
                   children: [
                     RadioListTile(
-                      value: 'f',
-                      groupValue: _radio1,
+                      value: 'easy',
+                      groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
-                        _radio1 = value;
+                        dificuldade = value!;
 
                         setState(() {});
                       },
                       title: const Text("Fácil"),
                     ),
                     RadioListTile(
-                      value: 'm',
-                      groupValue: _radio1,
+                      value: 'medium',
+                      groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
-                        _radio1 = value;
-
+                        dificuldade = value!;
                         setState(() {});
                       },
                       title: const Text("Médio"),
                     ),
                     RadioListTile(
-                      value: 'd',
-                      groupValue: _radio1,
+                      value: 'hard',
+                      groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
-                        _radio1 = value;
+                        dificuldade = value!;
 
                         setState(() {});
                       },
                       title: const Text("Difícil"),
                     ),
                     RadioListTile(
-                      value: 'e',
-                      groupValue: _radio1,
+                      value: 'expert',
+                      groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
-                        _radio1 = value;
+                        dificuldade = value!;
 
                         setState(() {});
                       },
@@ -91,10 +92,13 @@ class _PagInicialState extends State<PagInicial> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const PagJogo()),
-                    // );
+                    Navigator.of(
+                      context,
+                    ).push(MaterialPageRoute(
+                        builder: (context) => PagJogo(
+                              dificuldadeSelecionada: dificuldade,
+                              nome: controladorNome.text,
+                            )));
                   },
                   style: ButtonStyle(
                       minimumSize: WidgetStateProperty.all(Size(100, 50)),
