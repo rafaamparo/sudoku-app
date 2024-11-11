@@ -165,8 +165,7 @@ class _PagSudokuState extends State<PagSudoku> {
                                   child: Container(
                                     color: selecionado[0] == matriz &&
                                             selecionado[1] == indice
-                                        ? const Color.fromARGB(
-                                            255, 160, 225, 211)
+                                        ? const Color.fromARGB(255, 45, 68, 63)
                                         : avermelhar(matriz, indice)
                                             ? Colors.red
                                             : celulasVazias.contains(
@@ -181,9 +180,13 @@ class _PagSudokuState extends State<PagSudoku> {
                                           ? ''
                                           : matrizSudoku[matriz][indice]
                                               .toString(),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
+                                        color: celulasVazias.contains(
+                                                Tuple2(matriz, indice))
+                                            ? Color.fromARGB(255, 198, 190, 190)
+                                            : Colors.black,
                                       ),
                                     ),
                                   ));
@@ -273,7 +276,11 @@ class _PagSudokuState extends State<PagSudoku> {
             const SizedBox(
               height: 10,
             ),
-            FilledButton(onPressed: () {}, child: const Text("Novo Jogo"))
+            FilledButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop(context);
+                },
+                child: const Text("Novo Jogo"))
           ],
         )));
   }
