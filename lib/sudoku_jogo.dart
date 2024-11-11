@@ -36,7 +36,8 @@ class _JogoSudokuState extends State<JogoSudoku> {
           backgroundColor: const Color.fromARGB(255, 143, 87, 153),
           titleTextStyle: const TextStyle(color: Colors.white, fontSize: 22),
           title: Text(
-              "Sudoku: ${widget.nome} jogando! Dificuldade: ${widget.dificuldadeSelecionada}"),
+              "${widget.nome} jogando! Dificuldade: ${widget.dificuldadeSelecionada}",
+              style: const TextStyle(fontSize: 16)),
           automaticallyImplyLeading: true,
           leading: BackButton(
             color: Colors.white,
