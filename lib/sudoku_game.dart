@@ -31,6 +31,7 @@ class _PagSudokuState extends State<PagSudoku> {
   late Level nivel;
   late List<List<int>> matrizTemp;
   late List<List<int>> matrizSudoku;
+  late List<List<int>> matrizSolucao;
   late List<Tuple2<int, int>> celulasVazias;
   late List<int> selecionado;
   List<List<int>> mexerNoValor(int value) {
@@ -89,6 +90,17 @@ class _PagSudokuState extends State<PagSudoku> {
     return sublistas;
   }
 
+  bool comparaMatrizes(List<List<int>> matriz1, List<List<int>> matriz2) {
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (matriz1[i][j] != matriz2[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +111,8 @@ class _PagSudokuState extends State<PagSudoku> {
     matrizTemp = List.generate(
         9, (i) => List.generate(9, (j) => sudoku.puzzle[i * 9 + j]));
     matrizSudoku = processarMatriz(matrizTemp);
+    matrizSolucao = processarMatriz(List.generate(
+        9, (i) => List.generate(9, (j) => sudoku.solution[i * 9 + j])));
     celulasVazias = [];
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
@@ -114,8 +128,7 @@ class _PagSudokuState extends State<PagSudoku> {
     return SingleChildScrollView(
         padding: const EdgeInsets.all(10),
         child: Center(
-            child: Column(
-          children: [
+          child: Column(children: [
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 600),
               child: Container(
@@ -198,8 +211,8 @@ class _PagSudokuState extends State<PagSudoku> {
             Wrap(
               direction: Axis.horizontal,
               alignment: WrapAlignment.center,
-              spacing: 5,
-              runSpacing: 5,
+              spacing: 6,
+              runSpacing: 8,
               children: [
                 OutlinedButton(
                     onPressed: () {
@@ -274,14 +287,43 @@ class _PagSudokuState extends State<PagSudoku> {
               ],
             ),
             const SizedBox(
-              height: 10,
+              height: 14,
             ),
-            FilledButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop(context);
-                },
-                child: const Text("Novo Jogo"))
-          ],
-        )));
+            Wrap(
+              spacing: 6,
+              runSpacing: 8,
+              children: [
+                FilledButton(
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    },
+                    child: const Text("Novo Jogo")),
+                FilledButton(
+                  onPressed: (!comparaMatrizes(matrizSudoku, matrizSolucao))
+                      ? null
+                      : () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Vitória!'),
+                              content: const Text('Você venceu o jogo!'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancel'),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          ),
+                  child: const Text('Verificar Vitória'),
+                )
+              ],
+            )
+          ]),
+        ));
   }
 }
