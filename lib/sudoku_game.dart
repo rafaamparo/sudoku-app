@@ -29,6 +29,7 @@ class _PagSudokuState extends State<PagSudoku> {
   }
 
   late Level nivel;
+  late List<List<int>> matrizTemp;
   late List<List<int>> matrizSudoku;
   late List<Tuple2<int, int>> celulasVazias;
   late List<int> selecionado;
@@ -42,6 +43,52 @@ class _PagSudokuState extends State<PagSudoku> {
     return matrizSudoku;
   }
 
+  bool avermelhar(int quadrante, int indice) {
+    int linha = (quadrante ~/ 3) * 3 + (indice ~/ 3);
+    int coluna = (quadrante % 3) * 3 + (indice % 3);
+    for (int i = 0; i < 9; i++) {
+      if (matrizSudoku[quadrante][i] == matrizSudoku[quadrante][indice] &&
+          i != indice &&
+          matrizSudoku[quadrante][i] != -1) {
+        return true;
+      }
+    }
+    for (int c = 0; c < 9; c++) {
+      if (matrizSudoku[linha ~/ 3 * 3 + c ~/ 3][c % 3 + linha % 3 * 3] ==
+              matrizSudoku[quadrante][indice] &&
+          c != coluna &&
+          matrizSudoku[linha ~/ 3 * 3 + c ~/ 3][c % 3 + linha % 3 * 3] != -1) {
+        return true;
+      }
+    }
+    for (int r = 0; r < 9; r++) {
+      if (matrizSudoku[r ~/ 3 * 3 + coluna ~/ 3][coluna % 3 + r % 3 * 3] ==
+              matrizSudoku[quadrante][indice] &&
+          r != linha &&
+          matrizSudoku[r ~/ 3 * 3 + coluna ~/ 3][coluna % 3 + r % 3 * 3] !=
+              -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  List<List<int>> processarMatriz(List<List<int>> matriz) {
+    List<List<int>> sublistas = [];
+    for (int i = 0; i < 9; i += 3) {
+      List<int> bloco1 = [];
+      List<int> bloco2 = [];
+      List<int> bloco3 = [];
+      for (int j = 0; j < 3; j++) {
+        bloco1.addAll(matriz[i + j].sublist(0, 3));
+        bloco2.addAll(matriz[i + j].sublist(3, 6));
+        bloco3.addAll(matriz[i + j].sublist(6, 9));
+      }
+      sublistas.addAll([bloco1, bloco2, bloco3]);
+    }
+    return sublistas;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -49,8 +96,9 @@ class _PagSudokuState extends State<PagSudoku> {
     nivel = getLevel(widget.dificuldadeSelecionada);
     Sudoku sudoku = Sudoku.generate(nivel);
     sudoku.debug();
-    matrizSudoku = List.generate(
+    matrizTemp = List.generate(
         9, (i) => List.generate(9, (j) => sudoku.puzzle[i * 9 + j]));
+    matrizSudoku = processarMatriz(matrizTemp);
     celulasVazias = [];
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
@@ -119,12 +167,14 @@ class _PagSudokuState extends State<PagSudoku> {
                                             selecionado[1] == indice
                                         ? const Color.fromARGB(
                                             255, 160, 225, 211)
-                                        : celulasVazias.contains(
-                                                Tuple2(matriz, indice))
-                                            ? const Color.fromARGB(
-                                                255, 255, 255, 255)
-                                            : const Color.fromARGB(
-                                                255, 224, 205, 217),
+                                        : avermelhar(matriz, indice)
+                                            ? Colors.red
+                                            : celulasVazias.contains(
+                                                    Tuple2(matriz, indice))
+                                                ? const Color.fromARGB(
+                                                    255, 255, 255, 255)
+                                                : const Color.fromARGB(
+                                                    255, 224, 205, 217),
                                     alignment: Alignment.center,
                                     child: Text(
                                       matrizSudoku[matriz][indice] == -1
