@@ -43,7 +43,7 @@ class _PagInicialState extends State<PagInicial> {
                   runSpacing: 10,
                   children: [
                     RadioListTile(
-                      value: 'easy',
+                      value: 'fácil',
                       groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
@@ -54,7 +54,7 @@ class _PagInicialState extends State<PagInicial> {
                       title: const Text("Fácil"),
                     ),
                     RadioListTile(
-                      value: 'medium',
+                      value: 'médio',
                       groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");
@@ -64,7 +64,7 @@ class _PagInicialState extends State<PagInicial> {
                       title: const Text("Médio"),
                     ),
                     RadioListTile(
-                      value: 'hard',
+                      value: 'difícil',
                       groupValue: dificuldade,
                       onChanged: (String? value) {
                         print("Radio: $value");

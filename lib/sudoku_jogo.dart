@@ -35,7 +35,8 @@ class _JogoSudokuState extends State<JogoSudoku> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 143, 87, 153),
           titleTextStyle: const TextStyle(color: Colors.white, fontSize: 22),
-          title: const Text("Sudoku (Rafa's Version)"),
+          title: Text(
+              "Sudoku: ${widget.nome} jogando! Dificuldade: ${widget.dificuldadeSelecionada}"),
           automaticallyImplyLeading: true,
           leading: BackButton(
             color: Colors.white,
@@ -45,6 +46,6 @@ class _JogoSudokuState extends State<JogoSudoku> {
           ),
         ),
         body: PagSudoku(
-            dificuldadeSelecionada: dificuldadeSelecionada, nome: widget.nome));
+            dificuldadeSelecionada: dificuldadeSelecionada, nome: nome));
   }
 }
