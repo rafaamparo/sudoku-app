@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/services/databaseService.dart';
 import 'package:sudoku_dart/sudoku_dart.dart';
 import 'package:tuple/tuple.dart';
 
 class PagSudoku extends StatefulWidget {
   const PagSudoku(
-      {super.key, this.dificuldadeSelecionada = 'easy', this.nome = 'abc'});
+      {super.key,
+      this.dificuldadeSelecionada = 'easy',
+      this.nome = 'abc',
+      this.id = 0});
   final String dificuldadeSelecionada;
   final String nome;
-
+  final int? id;
   @override
   State<PagSudoku> createState() => _PagSudokuState();
 }
@@ -34,6 +38,8 @@ class _PagSudokuState extends State<PagSudoku> {
   late List<List<int>> matrizSolucao;
   late List<Tuple2<int, int>> celulasVazias;
   late List<int> selecionado;
+  final DatabaseService bancoDeDados = DatabaseService.instance;
+  bool ganhouPrimeiraVez = false;
   List<List<int>> mexerNoValor(int value) {
     int i = selecionado[0];
     int j = selecionado[1];
@@ -98,6 +104,8 @@ class _PagSudokuState extends State<PagSudoku> {
         }
       }
     }
+    ;
+    this.bancoDeDados.updateResultadoPartida(widget.id!, 1);
     return true;
   }
 
