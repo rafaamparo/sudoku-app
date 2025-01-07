@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sudoku/sudoku_estatisticas.dart';
 import 'package:sudoku/sudoku_jogo.dart';
 
 class PagInicial extends StatefulWidget {
@@ -103,12 +104,34 @@ class _PagInicialState extends State<PagInicial> {
                                 )));
                       },
                       style: ButtonStyle(
-                          minimumSize: WidgetStateProperty.all(Size(100, 50)),
+                          minimumSize:
+                              WidgetStateProperty.all(const Size(100, 50)),
                           backgroundColor: WidgetStateProperty.all(
-                              Color.fromARGB(255, 209, 154, 227))),
+                              const Color.fromARGB(255, 209, 154, 227))),
                       child: const Text('Novo Jogo',
                           style: TextStyle(color: Colors.white)),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(
+                          context,
+                        ).push(MaterialPageRoute(
+                            builder: (context) => const SudokuEstatisticas(
+                                // dificuldadeSelecionada: dificuldade,
+                                // nome: controladorNome.text,
+                                )));
+                      },
+                      style: ButtonStyle(
+                          minimumSize:
+                              WidgetStateProperty.all(const Size(100, 50)),
+                          backgroundColor: WidgetStateProperty.all(
+                              const Color.fromARGB(255, 209, 154, 227))),
+                      child: const Text('Ver Estatísticas',
+                          style: TextStyle(color: Colors.white)),
+                    ),
                   ],
                 ))));
   }

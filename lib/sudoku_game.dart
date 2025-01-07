@@ -163,7 +163,7 @@ class _PagSudokuState extends State<PagSudoku> {
                               crossAxisSpacing: 5,
                               mainAxisSpacing: 5,
                             ),
-                            physics: ScrollPhysics(),
+                            physics: const ScrollPhysics(),
                             itemBuilder: (BuildContext, indice) {
                               return InkWell(
                                   onTap: () {
@@ -198,7 +198,8 @@ class _PagSudokuState extends State<PagSudoku> {
                                         fontWeight: FontWeight.bold,
                                         color: celulasVazias.contains(
                                                 Tuple2(matriz, indice))
-                                            ? Color.fromARGB(255, 198, 190, 190)
+                                            ? const Color.fromARGB(
+                                                255, 198, 190, 190)
                                             : Colors.black,
                                       ),
                                     ),
