@@ -13,6 +13,13 @@ class _SudokuEstatisticasState extends State<SudokuEstatisticas> {
   final DatabaseService bancoDeDados = DatabaseService.instance;
   int dificuldade = -1;
   List<Jogo> listaPartidas = [];
+  final mapDificuldade = {
+    0: "fácil",
+    1: "médio",
+    2: "difícil",
+    3: "expert",
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,17 +35,19 @@ class _SudokuEstatisticasState extends State<SudokuEstatisticas> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
+                textAlign: TextAlign.center,
                 'Filtre sua busca por dificuldade',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
-                height: 5,
+                height: 10,
               ),
               DropdownButton<int>(
                 value: dificuldade,
@@ -66,7 +75,7 @@ class _SudokuEstatisticasState extends State<SudokuEstatisticas> {
                 ],
                 onChanged: (value) async {
                   List<Jogo> dadosBD = await bancoDeDados.buscarPartidas(
-                      dificuldade: dificuldade);
+                      dificuldade: value ?? -1);
                   setState(() {
                     dificuldade = value!;
                     listaPartidas = dadosBD;
@@ -86,7 +95,35 @@ class _SudokuEstatisticasState extends State<SudokuEstatisticas> {
                   Text(
                       "Jogos perdidos: ${listaPartidas.where((element) => element.result == 0).length ?? 0}"),
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              FutureBuilder(
+                future: bancoDeDados.buscarPartidas(dificuldade: dificuldade),
+                initialData: [],
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return SingleChildScrollView(
+                    child: Card(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        physics: const ScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: Text(
+                                "${snapshot.data[index].name} - ${mapDificuldade[snapshot.data[index].level]}"),
+                            subtitle: Text(snapshot.data[index].date),
+                            trailing: Text(snapshot.data[index].result == 1
+                                ? 'Vitória'
+                                : 'Derrota'),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
